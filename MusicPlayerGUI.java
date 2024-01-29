@@ -3,26 +3,24 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Hashtable;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.JToolBar;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 public class MusicPlayerGUI extends JFrame {
     //color configs
     public static final Color FRAME_COLOR = Color.BLACK;
     public static final Color TEXT_COLOR = Color.WHITE;
+    private final javax.swing.JFileChooser JFileChooser;
+    private MusicPlayer musicPlayer;
+
+    //allow us to use file explorer in our app
+    private JFileChooser JfileChooser;
+
 
     public MusicPlayerGUI() {
         //calls JFrame constructor to configure out gui and set the title header to "Music Player"
@@ -42,6 +40,13 @@ public class MusicPlayerGUI extends JFrame {
         //change the frame
         getContentPane().setBackground(FRAME_COLOR);
 
+        musicPlayer=new MusicPlayer();
+
+
+        JFileChooser=new JFileChooser();
+        //set a default path for file explorer
+        JFileChooser.setCurrentDirectory(new File("Music/src/assets/drive-download-20240126T162152Z-001"));
+
 
         addGuiComponents();
     }
@@ -50,10 +55,39 @@ public class MusicPlayerGUI extends JFrame {
         //add toolbar
         addToolbar();
         //Load record image
-        JLabel songImage = new JLabel(loadImage("drive-download-20240126T162152Z-001/record.png"));
+        JLabel songImage = new JLabel(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/record.png"));
         songImage.setBounds(0, 50, getWidth() - 20, 225);
         add(songImage);
+
+        //song title
+        JLabel songTitle = new JLabel("Song Title");
+        songTitle.setBounds(0, 285, getWidth() -10, 30);
+        songTitle.setFont(new Font("Dialog",Font.BOLD,24));
+        songTitle.setForeground(TEXT_COLOR);
+        songTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        add(songTitle);
+
+
+        //song artist
+        JLabel songArtist=new JLabel("Artist");
+        songArtist.setBounds(0 , 315 , getWidth()-10,30);
+        songArtist.setFont(new Font("Dialog",Font.PLAIN,24));
+        songArtist.setForeground(TEXT_COLOR);
+        songArtist.setHorizontalAlignment(SwingConstants.CENTER);
+        add(songArtist);
+
+        //playback slider
+        JSlider playbackSlider = new JSlider(JSlider.HORIZONTAL,0,100,0);
+        playbackSlider.setBounds(getWidth()/2 - 300/2, 365, 300,40);
+        playbackSlider.setBackground(null);
+        add(playbackSlider);
+
+
+        //playback buttons
+        addPlaybackButtons();
+
     }
+
 
     private void addToolbar() {
         JToolBar toolBar = new JToolBar();
@@ -68,8 +102,21 @@ public class MusicPlayerGUI extends JFrame {
         menuBar.add(songMenu);
 
         //add the "Load song"item in the song menu
-        JMenuItem LoadSong = new JMenuItem("Load Song");
-        songMenu.add(LoadSong);
+        JMenuItem loadSong = new JMenuItem("Load Song");
+        loadSong.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                JFileChooser.showOpenDialog(MusicPlayerGUI.this);
+                File selectedFile = JFileChooser.getSelectedFile();
+
+                if(selectedFile!= null){
+                    Song song= new Song(selectedFile.getPath());
+                    //load song in music player
+                    musicPlayer.loadSong(song);
+                }
+            }
+        });
+        songMenu.add(loadSong);
         //add the playlist menu
         JMenu playListMenu = new JMenu("Playlist");
         menuBar.add(playListMenu);
@@ -80,6 +127,44 @@ public class MusicPlayerGUI extends JFrame {
         playListMenu.add(loadPlaylist);
         add(toolBar);
     }
+
+
+    private void addPlaybackButtons() {
+        JPanel playbackBtns = new JPanel();
+        playbackBtns.setBounds(0, 435 , getWidth() - 10, 80);
+        playbackBtns.setBackground(null);
+
+        //previous button
+        JButton prevButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/previous.png"));
+        prevButton.setBorderPainted(false);
+        prevButton.setBackground(null);
+        playbackBtns.add(prevButton);
+
+        JButton playButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/play.png"));
+        playButton.setBorderPainted(false);
+        playButton.setBackground(null);
+        playbackBtns.add(playButton);
+
+        //pause button
+
+        JButton pauseButton=new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/pause.png"));
+        pauseButton.setBorderPainted(false);
+        pauseButton.setBackground(null);
+        pauseButton.setVisible(false);
+        playbackBtns.add(pauseButton);
+
+        //next button
+        JButton nextButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/next.png"));
+        nextButton.setBorderPainted(false);
+        nextButton.setBackground(null);
+       playbackBtns.add(nextButton);
+
+        add(playbackBtns);
+
+
+    }
+
+
 
     private ImageIcon loadImage(String imagePath) {
         try {
