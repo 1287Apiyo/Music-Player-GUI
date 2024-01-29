@@ -45,7 +45,7 @@ public class MusicPlayerGUI extends JFrame {
 
         JFileChooser=new JFileChooser();
         //set a default path for file explorer
-        JFileChooser.setCurrentDirectory(new File("Music/src/assets/drive-download-20240126T162152Z-001"));
+        JFileChooser.setCurrentDirectory(new File("out/production/Music/src/assets/drive-download-20240126T162152Z-001"));
 
 
         addGuiComponents();
@@ -55,7 +55,7 @@ public class MusicPlayerGUI extends JFrame {
         //add toolbar
         addToolbar();
         //Load record image
-        JLabel songImage = new JLabel(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/record.png"));
+        JLabel songImage = new JLabel(loadImage("out/production/Music/src/assets/drive-download-20240126T162152Z-001/record.png"));
         songImage.setBounds(0, 50, getWidth() - 20, 225);
         add(songImage);
 
@@ -135,29 +135,29 @@ public class MusicPlayerGUI extends JFrame {
         playbackBtns.setBackground(null);
 
         //previous button
-        JButton prevButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/previous.png"));
+        JButton prevButton = new JButton(loadImage("out/production/Music/assets/drive-download-20240126T162152Z-001/previous.png"));
         prevButton.setBorderPainted(false);
         prevButton.setBackground(null);
         playbackBtns.add(prevButton);
 
-        JButton playButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/play.png"));
+        JButton playButton = new JButton(loadImage("out/production/Music/assets/drive-download-20240126T162152Z-001/play.png"));
         playButton.setBorderPainted(false);
         playButton.setBackground(null);
         playbackBtns.add(playButton);
 
         //pause button
 
-        JButton pauseButton=new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/pause.png"));
+        JButton pauseButton=new JButton(loadImage("out/production/Music/assets/drive-download-20240126T162152Z-001/pause.png"));
         pauseButton.setBorderPainted(false);
         pauseButton.setBackground(null);
         pauseButton.setVisible(false);
         playbackBtns.add(pauseButton);
 
         //next button
-        JButton nextButton = new JButton(loadImage("Music/src/assets/drive-download-20240126T162152Z-001/next.png"));
+        JButton nextButton = new JButton(loadImage("out/production/Music/assets/drive-download-20240126T162152Z-001/next.png"));
         nextButton.setBorderPainted(false);
         nextButton.setBackground(null);
-       playbackBtns.add(nextButton);
+        playbackBtns.add(nextButton);
 
         add(playbackBtns);
 
