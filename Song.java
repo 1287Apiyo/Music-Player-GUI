@@ -1,5 +1,6 @@
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.mp3.VbriFrame;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 
@@ -51,5 +52,9 @@ public class Song {
 
     public String getFilePath() {
         return filePath;
+    }
+
+    public VbriFrame getMp3File() {
+        return null;
     }
 }
